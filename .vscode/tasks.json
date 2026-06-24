@@ -1,0 +1,24 @@
+{
+	"version": "2.0.0",
+	"openChromeBrowserOnServeDebugWebsite": false,
+	"tasks": [
+		{
+			"label": "Serve Debug Website",
+			"type": "shell",
+			"command": "python",
+			"args": [
+				"FWITD\\BuildingProcess\\default_website\\serve_debug.py"
+			],
+			"isBackground": true,
+			"problemMatcher": [],
+			"presentation": {
+				"reveal": "silent",
+				"panel": "dedicated",
+				"showReuseMessage": false
+			},
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
+		}
+	]
+}
