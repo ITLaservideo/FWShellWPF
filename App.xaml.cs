@@ -19,7 +19,9 @@ namespace FWShellWPF {
                     break;
                 }
             }
+#if HASDATABASE
             SQL.Init();
+#endif
             var main = new MainWindow();
 
             if (AppConfig._scripts.TryGetValue(RequestedStartApp, out var appConfig)) {

@@ -7,6 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
 	  <DefineConstants>$(DefineConstants);WPF</DefineConstants>
+	  <!-- <DefineConstants>$(DefineConstants);HASDATABASE</DefineConstants> -->
 	  <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 
@@ -28,6 +29,7 @@
     <Content Include="FWITD\ClientApp\**\*.svg" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="FWITD\**\*.ico" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="loading-messages.*.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="FWITD\Assets\DBUpdate\*.sql" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
@@ -45,6 +47,7 @@
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_Cloudflared --start-app 1.lnk&quot; -Arguments &quot;--start-app 1&quot; -IconPath &quot;$(TargetDir)FWITD\icons\cloudflare-cover2.ico&quot;" />
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_Android --start-app 5.lnk&quot; -Arguments &quot;--start-app 5&quot; -IconPath &quot;$(TargetDir)FWITD\icons\android.ico&quot;" />
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_ToDoList --start-app 7.lnk&quot; -Arguments &quot;--start-app 7&quot; -IconPath &quot;$(TargetDir)FWITD\icons\todo.ico&quot;" />
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_ServerStatus --start-app 12.lnk&quot; -Arguments &quot;--start-app 12&quot; -IconPath &quot;$(TargetDir)FWITD\icons\server_status.ico&quot;" />
   </Target>
 
 </Project>
