@@ -7,14 +7,31 @@
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="1045" Width="1200"
-        Top="0" Left="0">
+        Top="0" Left="0"
+        Background="#1f1f1f">
     <DockPanel LastChildFill="True">
-        <Rectangle x:Name="DragHandle"
-                   DockPanel.Dock="Top"
-                   Height="8"
-                   Fill="#1f1f1f"
-                   Visibility="Collapsed"
-                   MouseLeftButtonDown="DragHandle_MouseLeftButtonDown" Cursor="SizeAll" />
-        <wv2:WebView2 x:Name="WebView" />
+        <Grid x:Name="DragHandle"
+              DockPanel.Dock="Top"
+              Height="8"
+              Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="90*" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Column="0"
+                       Fill="#1f1f1f"
+                       Cursor="SizeNWSE"
+                       MouseLeftButtonDown="ResizeLeftHandle_MouseLeftButtonDown" />
+            <Rectangle Grid.Column="1"
+                       Fill="#1f1f1f"
+                       Cursor="SizeAll"
+                       MouseLeftButtonDown="DragHandle_MouseLeftButtonDown" />
+            <Rectangle Grid.Column="2"
+                       Fill="#1f1f1f"
+                       Cursor="SizeNESW"
+                       MouseLeftButtonDown="ResizeRightHandle_MouseLeftButtonDown" />
+        </Grid>
+        <wv2:WebView2 x:Name="WebView" DefaultBackgroundColor="#1f1f1f" />
     </DockPanel>
 </Window>

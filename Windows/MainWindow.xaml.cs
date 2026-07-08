@@ -14,13 +14,12 @@ namespace FWShellWPF {
                 Height = 600;
             }
             if (App.RequestedStartApp == StartApp.ServerStatus) {
-                //remove top bar, the app has it's own Application.exit
                 WindowStyle = WindowStyle.None;
                 ResizeMode = ResizeMode.NoResize;
-                Width = 500;
-                Height = 500;
-                Top = 200;
-                Left = 200;
+                Width = AppSettings.Get("MainWindow.Width", 500.0);
+                Height = AppSettings.Get("MainWindow.Height", 500.0);
+                Top = AppSettings.Get("MainWindow.Top", 200.0);
+                Left = AppSettings.Get("MainWindow.Left", 200.0);
                 DragHandle.Visibility = Visibility.Visible;
             }
             Loaded += OnLoaded;
@@ -28,7 +27,80 @@ namespace FWShellWPF {
         private void DragHandle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             if (e.ButtonState == MouseButtonState.Pressed) {
                 DragMove();
+                AppSettings.Set("MainWindow.Left", Left);
+                AppSettings.Set("MainWindow.Top", Top);
             }
+        }
+
+        private const double MinResizeWidth = 100;
+        private const double MinResizeHeight = 100;
+        private Point _resizeStartPoint;
+        private double _resizeStartWidth;
+        private double _resizeStartLeft;
+        private double _resizeStartHeight;
+        private double _resizeStartTop;
+        private bool _resizingFromLeft;
+
+        private void ResizeLeftHandle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            StartResize(sender, e, resizingFromLeft: true);
+        }
+
+        private void ResizeRightHandle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            StartResize(sender, e, resizingFromLeft: false);
+        }
+
+        private void StartResize(object sender, MouseButtonEventArgs e, bool resizingFromLeft) {
+            _resizingFromLeft = resizingFromLeft;
+            _resizeStartPoint = PointToScreen(e.GetPosition(this));
+            _resizeStartWidth = Width;
+            _resizeStartLeft = Left;
+            _resizeStartHeight = Height;
+            _resizeStartTop = Top;
+
+            var handle = (UIElement)sender;
+            handle.MouseMove += ResizeHandle_MouseMove;
+            handle.MouseLeftButtonUp += ResizeHandle_MouseLeftButtonUp;
+            handle.CaptureMouse();
+        }
+        private void ResizeHandle_MouseMove(object sender, MouseEventArgs e) {
+            if (e.LeftButton != MouseButtonState.Pressed) return;
+
+            var current = PointToScreen(e.GetPosition(this));
+            double deltaX = current.X - _resizeStartPoint.X;
+            double deltaY = current.Y - _resizeStartPoint.Y;
+
+            if (_resizingFromLeft) {
+                double newWidth = _resizeStartWidth - deltaX;
+                if (newWidth >= MinResizeWidth) {
+                    Width = newWidth;
+                    Left = _resizeStartLeft + deltaX;
+                }
+            } else {
+                double newWidth = _resizeStartWidth + deltaX;
+                if (newWidth >= MinResizeWidth) {
+                    Width = newWidth;
+                }
+            }
+
+            // The handle sits on the top edge, so dragging up grows the window,
+            // anchoring the resize at the bottom edge.
+            double newHeight = _resizeStartHeight - deltaY;
+            if (newHeight >= MinResizeHeight) {
+                Height = newHeight;
+                Top = _resizeStartTop + deltaY;
+            }
+        }
+
+        private void ResizeHandle_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+            var handle = (UIElement)sender;
+            handle.ReleaseMouseCapture();
+            handle.MouseMove -= ResizeHandle_MouseMove;
+            handle.MouseLeftButtonUp -= ResizeHandle_MouseLeftButtonUp;
+
+            AppSettings.Set("MainWindow.Width", Width);
+            AppSettings.Set("MainWindow.Height", Height);
+            AppSettings.Set("MainWindow.Left", Left);
+            AppSettings.Set("MainWindow.Top", Top);
         }
         private async void OnLoaded(object sender, RoutedEventArgs e) {
             await WebView.EnsureCoreWebView2Async();
