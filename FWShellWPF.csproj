@@ -6,31 +6,54 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <AssemblyName>DevFWShellWPF</AssemblyName>
+    <Product>DevFWShellWPF</Product>
+    <RootNamespace>FWShellWPF</RootNamespace>
+    <ApplicationIcon>FWITD\icons\server_status.ico</ApplicationIcon>
 	  <DefineConstants>$(DefineConstants);WPF</DefineConstants>
 	  <!-- <DefineConstants>$(DefineConstants);HASDATABASE</DefineConstants> -->
 	  <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.1" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3967.48" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="FWITD\Controllers\FM32_25\**" />
+    <EmbeddedResource Remove="FWITD\Controllers\FM32_25\**" />
     <None Remove="FWITD\ClientApp\**\*" />
+    <None Remove="FWITD\Controllers\FM32_25\**" />
     <None Remove="FWITD\out\**" />
-    <Content Include="FWITD\ClientApp\**\*.min.js" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="FWITD\ClientApp\**\*.min.css" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="FWITD\ClientApp\**\*.min.html" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="FWITD\ClientApp\**\*.woff2" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="FWITD\ClientApp\**\*.png" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="FWITD\ClientApp\**\*.svg" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Shipped inside the .exe itself rather than as loose files next to it: a plain Content copy
+         sitting in the output folder would be independently rewritable by anything with filesystem
+         write access, with no signing/detection scheme able to protect it since AssetLoader would
+         just re-read (and re-trust) whatever's on disk. Embedding narrows tampering this asset class
+         to "patch the compiled binary", the same bar as tampering the app itself. -->
+    <EmbeddedResource Include="FWITD\ClientApp\**\*.min.js" LogicalName="FWITD/ClientApp/%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="FWITD\ClientApp\**\*.min.css" LogicalName="FWITD/ClientApp/%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="FWITD\ClientApp\**\*.min.html" LogicalName="FWITD/ClientApp/%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="FWITD\ClientApp\**\*.woff2" LogicalName="FWITD/ClientApp/%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="FWITD\ClientApp\**\*.png" LogicalName="FWITD/ClientApp/%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="FWITD\ClientApp\**\*.svg" LogicalName="FWITD/ClientApp/%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- pdf.js worker image codecs (utils/external_libs/pdfjs_wasm/), served as bytes by App/GetPdfJsWasm -->
+    <EmbeddedResource Include="FWITD\ClientApp\**\*.wasm" LogicalName="FWITD/ClientApp/%(RecursiveDir)%(Filename)%(Extension)" />
+    <!-- .ico stays loose: CreateStartAppShortcut below needs a real on-disk path for the Windows Shell shortcut icon. -->
     <Content Include="FWITD\**\*.ico" CopyToOutputDirectory="PreserveNewest" />
+    <!-- copied next to the exe so CreateAllShortcuts.ps1 can resolve everything via $PSScriptRoot -->
+    <Content Include="FWITD\BuildingProcess\*.ps1" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="loading-messages.*.json" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="FWITD\Assets\DBUpdate\*.sql" CopyToOutputDirectory="PreserveNewest" />
+    <!-- SQL.EnsureTablesAndDataExist() already reads these via GetManifestResourceNames()/GetManifestResourceStream(),
+         so they need to actually be embedded, not loose Content, or every migration silently never applies. -->
+    <EmbeddedResource Include="Assets\DBUpdate\*.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="FWITD\Controllers\FM32_25\**" />
+    <Page Remove="FWITD\Controllers\FM32_25\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,16 +62,16 @@
     <Compile Remove="FWITD\UtilsWeb.cs" />
   </ItemGroup>
 
-  <Target Name="CreateStartAppShortcut" AfterTargets="Build">
-    <PropertyGroup>
-      <StartAppExecutable>$(TargetDir)$(AssemblyName).exe</StartAppExecutable>
-    </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LIBS\QStorage\QStorage.csproj" />
+    <ProjectReference Include="..\LIBS\DataCipher\DataCipher.csproj" />
+  </ItemGroup>
 
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_Cloudflared --start-app 1.lnk&quot; -Arguments &quot;--start-app 1&quot; -IconPath &quot;$(TargetDir)FWITD\icons\cloudflare-cover2.ico&quot;" />
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_Android --start-app 5.lnk&quot; -Arguments &quot;--start-app 5&quot; -IconPath &quot;$(TargetDir)FWITD\icons\android.ico&quot;" />
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_ToDoList --start-app 7.lnk&quot; -Arguments &quot;--start-app 7&quot; -IconPath &quot;$(TargetDir)FWITD\icons\todo.ico&quot;" />
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_ServerStatus --start-app 12.lnk&quot; -Arguments &quot;--start-app 12&quot; -IconPath &quot;$(TargetDir)FWITD\icons\server_status.ico&quot;" />
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_ImageEditor --start-app 13.lnk&quot; -Arguments &quot;--start-app 13&quot; -IconPath &quot;$(TargetDir)FWITD\icons\image_editor.ico&quot;" />
+  <Target Name="CreateStartAppShortcut" AfterTargets="Build">
+    <!-- `cmd /c start` launches the script detached and returns immediately, so the build doesn't
+         block waiting for these dev-convenience shortcuts to be (re)created. The script itself
+         resolves the exe/icons/helper paths relative to its own location in the output folder. -->
+    <Exec Command="cmd /c start &quot;&quot; /min powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(TargetDir)FWITD\BuildingProcess\CreateAllShortcuts.ps1&quot; -ExeName &quot;$(AssemblyName).exe&quot;" />
   </Target>
 
 </Project>

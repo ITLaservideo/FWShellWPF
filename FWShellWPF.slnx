@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="../LIBS/DataCipher/DataCipher.csproj" />
+  <Project Path="../LIBS/QStorage/QStorage.csproj" />
   <Project Path="FWShellWPF.csproj" />
 </Solution>
