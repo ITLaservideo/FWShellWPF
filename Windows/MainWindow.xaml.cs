@@ -16,10 +16,10 @@ namespace FWShellWPF {
             if (App.RequestedStartApp == StartApp.ServerStatus) {
                 WindowStyle = WindowStyle.None;
                 ResizeMode = ResizeMode.NoResize;
-                Width = AppSettings.Get("MainWindow.Width", 500.0);
-                Height = AppSettings.Get("MainWindow.Height", 500.0);
-                Top = AppSettings.Get("MainWindow.Top", 200.0);
-                Left = AppSettings.Get("MainWindow.Left", 200.0);
+                Width = AppSettings.Get($"{App.RequestedStartApp}.Width", 500.0);
+                Height = AppSettings.Get($"{App.RequestedStartApp}.Height", 500.0);
+                Top = AppSettings.Get($"{App.RequestedStartApp}.Top", 200.0);
+                Left = AppSettings.Get($"{App.RequestedStartApp}.Left", 200.0);
                 DragHandle.Visibility = Visibility.Visible;
             }
             Loaded += OnLoaded;
@@ -27,8 +27,8 @@ namespace FWShellWPF {
         private void DragHandle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             if (e.ButtonState == MouseButtonState.Pressed) {
                 DragMove();
-                AppSettings.Set("MainWindow.Left", Left);
-                AppSettings.Set("MainWindow.Top", Top);
+                AppSettings.Set($"{App.RequestedStartApp}.Left", Left);
+                AppSettings.Set($"{App.RequestedStartApp}.Top", Top);
             }
         }
 
@@ -97,10 +97,10 @@ namespace FWShellWPF {
             handle.MouseMove -= ResizeHandle_MouseMove;
             handle.MouseLeftButtonUp -= ResizeHandle_MouseLeftButtonUp;
 
-            AppSettings.Set("MainWindow.Width", Width);
-            AppSettings.Set("MainWindow.Height", Height);
-            AppSettings.Set("MainWindow.Left", Left);
-            AppSettings.Set("MainWindow.Top", Top);
+            AppSettings.Set($"{App.RequestedStartApp}.Width", Width);
+            AppSettings.Set($"{App.RequestedStartApp}.Height", Height);
+            AppSettings.Set($"{App.RequestedStartApp}.Left", Left);
+            AppSettings.Set($"{App.RequestedStartApp}.Top", Top);
         }
         private async void OnLoaded(object sender, RoutedEventArgs e) {
             await WebView.EnsureCoreWebView2Async();
