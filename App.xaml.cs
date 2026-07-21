@@ -14,8 +14,14 @@ namespace FWShellWPF {
 
             var args = e.Args;
             for (int i = 0; i < args.Length - 1; i++) {
-                if (args[i] == "--start-app" && int.TryParse(args[i + 1], out int value) && Enum.IsDefined(typeof(StartApp), value)) {
-                    RequestedStartApp = (StartApp)value;
+                if (args[i] == "--start-app" && int.TryParse(args[i + 1], out int value) ) {
+                    if(Enum.IsDefined(typeof(StartApp), value)){
+                        RequestedStartApp = (StartApp)value;
+                    }else{
+                        MessageBox.Show($"The requested app id '{value}' does not exist.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        Shutdown();
+                        return;
+                    }
                     break;
                 }
             }
