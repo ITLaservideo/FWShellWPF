@@ -12,14 +12,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.1" />
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3967.48" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="FWITD\Controllers\FM32_25\**" />
+    <EmbeddedResource Remove="FWITD\Controllers\FM32_25\**" />
     <None Remove="FWITD\ClientApp\**\*" />
+    <None Remove="FWITD\Controllers\FM32_25\**" />
     <None Remove="FWITD\out\**" />
     <Content Include="FWITD\ClientApp\**\*.min.js" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="FWITD\ClientApp\**\*.min.css" CopyToOutputDirectory="PreserveNewest" />
@@ -34,9 +36,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="FWITD\Controllers\FM32_25\**" />
+    <Page Remove="FWITD\Controllers\FM32_25\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="FWITD\CloudflareCidrs.cs" />
     <Compile Remove="FWITD\Services\SystemSettingsAegisGate.cs" />
     <Compile Remove="FWITD\UtilsWeb.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LIBS\QStorage\QStorage.csproj" />
   </ItemGroup>
 
   <Target Name="CreateStartAppShortcut" AfterTargets="Build">

@@ -1,4 +1,4 @@
-using DotNet.Utility;
+using QStorage;
 using FWITD;
 using System.Configuration;
 using System.Data;
@@ -7,6 +7,7 @@ using System.Windows;
 namespace FWShellWPF {
 
     public partial class App : Application {
+        //public static StartApp RequestedStartApp { get; private set; } = StartApp.DashboardLettoreBarcode;
         public static StartApp RequestedStartApp { get; private set; } = AppSettings.Get<StartApp>("App.RequestedStartApp", StartApp.Dashboard);
 
         protected override void OnStartup(StartupEventArgs e) {

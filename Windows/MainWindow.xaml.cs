@@ -1,5 +1,6 @@
 ﻿using FWITD;
 using FWShellWPF.Windows;
+using QStorage;
 using System.Windows;
 using System.Windows.Input;
 
@@ -13,7 +14,7 @@ namespace FWShellWPF {
                 Width = 340;
                 Height = 600;
             }
-            if (App.RequestedStartApp == StartApp.ServerStatus) {
+            if (App.RequestedStartApp == StartApp.ServerStatus || App.RequestedStartApp == StartApp.DashboardLettoreBarcode) {
                 WindowStyle = WindowStyle.None;
                 ResizeMode = ResizeMode.NoResize;
                 Width = AppSettings.Get($"{App.RequestedStartApp}.Width", 500.0);
