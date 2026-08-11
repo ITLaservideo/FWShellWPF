@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="../LIBS/QStorage/QStorage.csproj" />
+  <Project Path="..\LIBS\FM32_25\FM32_25.csproj" />
   <Project Path="FWShellWPF.csproj" />
 </Solution>

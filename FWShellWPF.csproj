@@ -47,19 +47,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="FWITD\Controllers\FM32_25\FM32_25Controller.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LIBS\FM32_25\FM32_25.csproj" />
     <ProjectReference Include="..\LIBS\QStorage\QStorage.csproj" />
   </ItemGroup>
 
   <Target Name="CreateStartAppShortcut" AfterTargets="Build">
     <PropertyGroup>
       <StartAppExecutable>$(TargetDir)$(AssemblyName).exe</StartAppExecutable>
-    </PropertyGroup>
-
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_Cloudflared --start-app 1.lnk&quot; -Arguments &quot;--start-app 1&quot; -IconPath &quot;$(TargetDir)FWITD\icons\cloudflare-cover2.ico&quot;" />
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_Android --start-app 5.lnk&quot; -Arguments &quot;--start-app 5&quot; -IconPath &quot;$(TargetDir)FWITD\icons\android.ico&quot;" />
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_ToDoList --start-app 7.lnk&quot; -Arguments &quot;--start-app 7&quot; -IconPath &quot;$(TargetDir)FWITD\icons\todo.ico&quot;" />
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_ServerStatus --start-app 12.lnk&quot; -Arguments &quot;--start-app 12&quot; -IconPath &quot;$(TargetDir)FWITD\icons\server_status.ico&quot;" />
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_ImageEditor --start-app 13.lnk&quot; -Arguments &quot;--start-app 13&quot; -IconPath &quot;$(TargetDir)FWITD\icons\image_editor.ico&quot;" />
+    </PropertyGroup>    
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\FWITD\BuildingProcess\CreateShortcut.ps1&quot; -TargetExe &quot;$(StartAppExecutable)&quot; -ShortcutPath &quot;$(OutDir)_WAWX_FM32_25 --start-app 3225.lnk&quot; -Arguments &quot;--start-app 3225&quot; -IconPath &quot;$(TargetDir)FWITD\icons\fm32-25.ico&quot;" />
   </Target>
 
 </Project>
