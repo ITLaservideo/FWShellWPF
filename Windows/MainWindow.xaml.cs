@@ -14,16 +14,24 @@ namespace FWShellWPF {
                 Width = 340;
                 Height = 600;
             }
-            if (App.RequestedStartApp == StartApp.ServerStatus || App.RequestedStartApp == StartApp.DashboardLettoreBarcode) {
-                WindowStyle = WindowStyle.None;
-                ResizeMode = ResizeMode.NoResize;
-                Width = AppSettings.Get($"{App.RequestedStartApp}.Width", 500.0);
-                Height = AppSettings.Get($"{App.RequestedStartApp}.Height", 500.0);
-                Top = AppSettings.Get($"{App.RequestedStartApp}.Top", 200.0);
-                Left = AppSettings.Get($"{App.RequestedStartApp}.Left", 200.0);
-                DragHandle.Visibility = Visibility.Visible;
-            }
+            setInitialPositionAndSize();
             Loaded += OnLoaded;
+        }
+        private void setInitialPositionAndSize() {
+            switch (App.RequestedStartApp) {
+                case StartApp.ServerStatus:
+                case StartApp.DashboardLettoreBarcode:
+                case StartApp.Cloudflared:
+                    DragHandle.Visibility = Visibility.Visible;
+                    WindowStyle = WindowStyle.None;
+                    ResizeMode = ResizeMode.NoResize;
+                    Width = AppSettings.Get($"{App.RequestedStartApp}.Width", 500.0);
+                    Height = AppSettings.Get($"{App.RequestedStartApp}.Height", 500.0);
+                    Top = AppSettings.Get($"{App.RequestedStartApp}.Top", 200.0);
+                    Left = AppSettings.Get($"{App.RequestedStartApp}.Left", 200.0);
+                    break;
+                    
+            }
         }
         private void DragHandle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             if (e.ButtonState == MouseButtonState.Pressed) {
