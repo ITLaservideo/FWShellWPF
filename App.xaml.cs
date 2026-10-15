@@ -6,8 +6,8 @@ using System.Windows;
 namespace FWShellWPF {
 
     public partial class App : Application {
-        public static StartApp RequestedStartApp { get; private set; } = StartApp.Cloudflared;
-        // public static StartApp RequestedStartApp { get; private set; } = AppSettings.Get<StartApp>("App.RequestedStartApp", StartApp.DashboardLayout1);
+        public static StartApp RequestedStartApp { get; private set; } = StartApp.DCVAC;
+        //public static StartApp RequestedStartApp { get; private set; } = QStorage.AppSettings.Get<StartApp>("App.RequestedStartApp", StartApp.DCVAC);
 
         protected override void OnStartup(StartupEventArgs e) {
             base.OnStartup(e);
