@@ -10,14 +10,14 @@ namespace FWShellWPF {
         private const int id_webview = (int)IDWebviews.MainWindow;
         public MainWindow() {
             InitializeComponent();
-            if (App.RequestedStartApp.ToString().ToLower().Contains("android")) {
-                Width = 340;
-                Height = 600;
-            }
             setInitialPositionAndSize();
             Loaded += OnLoaded;
         }
         private void setInitialPositionAndSize() {
+            if (App.RequestedStartApp.ToString().ToLower().Contains("android")) {
+                Width = 340;
+                Height = 600;
+            }
             switch (App.RequestedStartApp) {
                 case StartApp.ServerStatus:
                 case StartApp.DashboardLettoreBarcode:
@@ -29,6 +29,15 @@ namespace FWShellWPF {
                     Height = AppSettings.Get($"{App.RequestedStartApp}.Height", 500.0);
                     Top = AppSettings.Get($"{App.RequestedStartApp}.Top", 200.0);
                     Left = AppSettings.Get($"{App.RequestedStartApp}.Left", 200.0);
+                    break;
+                case StartApp.DCVAC:
+                    DragHandle.Visibility = Visibility.Visible;
+                    WindowStyle = WindowStyle.None;
+                    ResizeMode = ResizeMode.NoResize;
+                    Width = AppSettings.Get($"{App.RequestedStartApp}.Width", 545.0);
+                    Height = AppSettings.Get($"{App.RequestedStartApp}.Height", 171.0);
+                    Top = AppSettings.Get($"{App.RequestedStartApp}.Top", 862.0);
+                    Left = AppSettings.Get($"{App.RequestedStartApp}.Left", 1.0);
                     break;
                     
             }
