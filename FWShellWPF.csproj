@@ -22,10 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="FWITD\Controllers\FM32_25\**" />
-    <EmbeddedResource Remove="FWITD\Controllers\FM32_25\**" />
     <None Remove="FWITD\ClientApp\**\*" />
-    <None Remove="FWITD\Controllers\FM32_25\**" />
     <None Remove="FWITD\out\**" />
     <!-- Shipped inside the .exe itself rather than as loose files next to it: a plain Content copy
          sitting in the output folder would be independently rewritable by anything with filesystem
@@ -52,11 +49,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="FWITD\Controllers\FM32_25\**" />
-    <Page Remove="FWITD\Controllers\FM32_25\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Remove="FWITD\CloudflareCidrs.cs" />
     <Compile Remove="FWITD\Services\SystemSettingsAegisGate.cs" />
     <Compile Remove="FWITD\UtilsWeb.cs" />
@@ -65,6 +57,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LIBS\QStorage\QStorage.csproj" />
     <ProjectReference Include="..\LIBS\DataCipher\DataCipher.csproj" />
+    <ProjectReference Include="../LIBS/FM32_25/FM32_25.csproj" />
   </ItemGroup>
 
   <Target Name="CreateStartAppShortcut" AfterTargets="Build">
