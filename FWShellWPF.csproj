@@ -9,7 +9,7 @@
     <AssemblyName>DevFWShellWPF</AssemblyName>
     <Product>DevFWShellWPF</Product>
     <RootNamespace>FWShellWPF</RootNamespace>
-    <ApplicationIcon>FWITD\icons\server_status.ico</ApplicationIcon>
+    <ApplicationIcon>FWITD\icons\debugging.ico</ApplicationIcon>
 	  <DefineConstants>$(DefineConstants);WPF</DefineConstants>
 	  <!-- <DefineConstants>$(DefineConstants);HASDATABASE</DefineConstants> -->
 	  <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
