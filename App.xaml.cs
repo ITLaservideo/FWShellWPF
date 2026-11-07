@@ -37,7 +37,7 @@ namespace FWShellWPF {
             Log.log($"APP:{RequestedStartApp.ToString()} Started {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}", LogType.Info);
 #endif
 #if HASDATABASE
-            SQL.Init();
+            QStorage.SQL.Init();
 #endif
             var main = new MainWindow();
 
