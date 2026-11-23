@@ -1,19 +1,11 @@
 # Builds FWShellWPF in Debug configuration (output: bin\Debug\net10.0-windows\)
 #
-# Runs on the newest installed .NET 10 SDK rather than whatever `dotnet` resolves by default: restore walks
-# every TargetFramework of the referenced QStorage project (incl. net10.0-android/ios), so it needs an SDK
-# that has the MAUI workloads installed — a newer preview/RC SDK without them fails with NETSDK1147.
+# Uses the default `dotnet` SDK, same as Visual Studio. Restore walks every TargetFramework of the referenced
+# QStorage project (incl. net10.0-android/ios), so that SDK must have the MAUI workloads installed, otherwise
+# it fails with NETSDK1147 (fix: `dotnet workload restore`, or install them via the Visual Studio installer).
 $ErrorActionPreference = 'Stop'
 
-$sdk = dotnet --list-sdks |
-    ForEach-Object { if ($_ -match '^(10\.\d+\.\d+)\s+\[(.+)\]$') { [pscustomobject]@{ Version = [version]$Matches[1]; Path = Join-Path $Matches[2] $Matches[1] } } } |
-    Sort-Object Version -Descending |
-    Select-Object -First 1
-if (-not $sdk) {
-    Write-Host "No .NET 10 SDK found (dotnet --list-sdks)" -ForegroundColor Red
-    exit 1
-}
-Write-Host "Using .NET SDK $($sdk.Version)" -ForegroundColor Cyan
+Write-Host "Using .NET SDK $(dotnet --version)" -ForegroundColor Cyan
 
 # Force close running instances of the Debug build, otherwise the copy to the output folder fails on locked dlls.
 # An instance whose path can't be read (e.g. started elevated) is assumed to be ours.
@@ -50,7 +42,7 @@ if (Test-Path $binDir) {
     }
 }
 
-dotnet "$($sdk.Path)\dotnet.dll" build "$PSScriptRoot\FWShellWPF.csproj" -c Debug
+dotnet build "$PSScriptRoot\FWShellWPF.csproj" -c Debug
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Build failed (exit code $LASTEXITCODE)" -ForegroundColor Red
     exit $LASTEXITCODE
