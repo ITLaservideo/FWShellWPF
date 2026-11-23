@@ -37,6 +37,19 @@ foreach ($p in $running) {
     }
 }
 
+# Clean build: delete the whole bin folder (after closing instances above, so its files aren't locked)
+$binDir = "$PSScriptRoot\bin"
+if (Test-Path $binDir) {
+    try {
+        Remove-Item -LiteralPath $binDir -Recurse -Force -ErrorAction Stop
+        Write-Host "Deleted $binDir" -ForegroundColor Yellow
+    }
+    catch {
+        Write-Host "Can't delete ${binDir}: $($_.Exception.Message)" -ForegroundColor Red
+        exit 1
+    }
+}
+
 dotnet "$($sdk.Path)\dotnet.dll" build "$PSScriptRoot\FWShellWPF.csproj" -c Debug
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Build failed (exit code $LASTEXITCODE)" -ForegroundColor Red
