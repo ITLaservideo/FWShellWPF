@@ -19,6 +19,89 @@
 			"runOptions": {
 				"runOn": "folderOpen"
 			}
+		},
+		{
+			"label": "Dependency: Install BuildingProcess deps",
+			"type": "shell",
+			"command": "npm install",
+			"options": {
+				"cwd": "${workspaceFolder}\\FWITD\\BuildingProcess"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "★ Build: Minify ClientApp",
+			"type": "shell",
+			"command": ".\\FWITD\\BuildingProcess\\MinifyClientApp.bat -NoPause",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "☆ Build: Update JS Enums",
+			"type": "shell",
+			"command": ".\\FWITD\\BuildingProcess\\UpdateJSEnums.bat -NoPause",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "☆ Scaffold: Create Page",
+			"type": "shell",
+			"command": ".\\FWITD\\BuildingProcess\\CreatePage.bat -NoPause",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "☆ Scaffold: Create Component",
+			"type": "shell",
+			"command": ".\\FWITD\\BuildingProcess\\CreateComponent.bat -NoPause",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "☆ Scaffold: Create Injectable App",
+			"type": "shell",
+			"command": ".\\FWITD\\BuildingProcess\\CreateInjectable.bat -NoPause",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"presentation": {
+				"reveal": "always",
+				"focus": true,
+				"panel": "shared"
+			},
+			"problemMatcher": []
 		}
 	]
 }
